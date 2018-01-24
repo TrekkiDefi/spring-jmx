@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="
+    	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!--
+        这个便捷的元素装配了MBean导出器以及为了在Spring启用注解驱动的MBean所需要的装配器
+
+        failOnExisting指定发现同名MBean报异常；
+        使用spring boot JmxAutoConfiguration配置的mbeanServer；
+    -->
+    <context:mbean-export registration="failOnExisting" server="mbeanServer"/>
+</beans>
