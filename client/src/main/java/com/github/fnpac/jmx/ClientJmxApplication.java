@@ -13,10 +13,10 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @SpringBootApplication
 // 排除spring JmxAutoConfiguration 自动配置，解决MBeanServerConnection依赖问题
 @EnableAutoConfiguration(exclude = JmxAutoConfiguration.class)
-public class SpringJmxApplication extends SpringBootServletInitializer implements EmbeddedServletContainerCustomizer {
+public class ClientJmxApplication extends SpringBootServletInitializer implements EmbeddedServletContainerCustomizer {
 
 	public static void main(String[] args) {
-		SpringApplication.run(SpringJmxApplication.class, args);
+		SpringApplication.run(ClientJmxApplication.class, args);
 	}
 
 	@Override

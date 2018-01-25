@@ -1,11 +1,17 @@
 package com.github.fnpac.jmx.spring;
 
+import com.github.fnpac.jmx.SchedulerListener;
+import com.github.fnpac.jmx.SchedulerManagedOptions;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.ImportResource;
+import org.springframework.jmx.access.MBeanProxyFactoryBean;
 import org.springframework.jmx.support.MBeanServerConnectionFactoryBean;
 
+import javax.management.InstanceNotFoundException;
 import javax.management.MBeanServerConnection;
+import javax.management.MalformedObjectNameException;
+import javax.management.ObjectName;
+import java.io.IOException;
 import java.net.MalformedURLException;
 
 /**
@@ -15,7 +21,7 @@ import java.net.MalformedURLException;
 public class Config {
 
     ////////////////////////////////////////////////////////////////////
-    ///////                TODO 访问远程MBean             //////////
+    //                  TODO 访问远程MBean
     ////////////////////////////////////////////////////////////////////
 
     /**
@@ -38,5 +44,25 @@ public class Config {
 //        可以关闭以允许JMX服务器启动晚一些。在这种情况下，首次访问时将获取JMX连接器。
         connectionFactoryBean.setConnectOnStartup(true);
         return connectionFactoryBean;
+    }
+
+    @Bean
+    public MBeanProxyFactoryBean schedulerProxy(MBeanServerConnection server) throws MalformedObjectNameException {
+        MBeanProxyFactoryBean schedulerProxy = new MBeanProxyFactoryBean();
+        schedulerProxy.setObjectName("scheduler:name=Scheduler");
+        schedulerProxy.setServer(server);
+        schedulerProxy.setProxyInterface(SchedulerManagedOptions.class);
+        return schedulerProxy;
+    }
+
+    ////////////////////////////////////////////////////////////////////
+    //                  TODO 监听远程MBean
+    ////////////////////////////////////////////////////////////////////
+    @Bean
+    public SchedulerListener mBeanNotificationExporter(MBeanServerConnection connection) throws MalformedObjectNameException, IOException, InstanceNotFoundException {
+
+        SchedulerListener schedulerListener = new SchedulerListener();
+        connection.addNotificationListener(new ObjectName("scheduler:name=Scheduler"), schedulerListener, null, null);
+        return schedulerListener;
     }
 }

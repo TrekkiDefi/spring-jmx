@@ -6,9 +6,9 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 @EnableScheduling
 @SpringBootApplication
-public class SpringJmxApplication {
+public class ServerJmxApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(SpringJmxApplication.class, args);
+		SpringApplication.run(ServerJmxApplication.class, args);
 	}
 }
